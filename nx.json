@@ -55,6 +55,5 @@
         "unitTestRunner": "vitest"
       }
     }
-  },
-  "analytics": false
+  }
 }
