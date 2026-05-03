@@ -45,34 +45,32 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-too
 
 **Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
 
-```dot
-digraph skill_flow {
-    "User message received" [shape=doublecircle];
-    "About to EnterPlanMode?" [shape=doublecircle];
-    "Already brainstormed?" [shape=diamond];
-    "Invoke brainstorming skill" [shape=box];
-    "Might any skill apply?" [shape=diamond];
-    "Invoke Skill tool" [shape=box];
-    "Announce: 'Using [skill] to [purpose]'" [shape=box];
-    "Has checklist?" [shape=diamond];
-    "Create TodoWrite todo per item" [shape=box];
-    "Follow skill exactly" [shape=box];
-    "Respond (including clarifications)" [shape=doublecircle];
+```mermaid
+flowchart TD
+    A((("User message received")))
+    B((("About to EnterPlanMode?")))
+    C{"Already brainstormed?"}
+    D["Invoke brainstorming skill"]
+    E{"Might any skill apply?"}
+    F["Invoke Skill tool"]
+    G["Announce: 'Using [skill] to [purpose]'"]
+    H{"Has checklist?"}
+    I["Create TodoWrite todo per item"]
+    J["Follow skill exactly"]
+    K((("Respond (including clarifications)")))
 
-    "About to EnterPlanMode?" -> "Already brainstormed?";
-    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
-    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-    "Invoke brainstorming skill" -> "Might any skill apply?";
-
-    "User message received" -> "Might any skill apply?";
-    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
-    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
-    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
-    "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
-    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
-    "Has checklist?" -> "Follow skill exactly" [label="no"];
-    "Create TodoWrite todo per item" -> "Follow skill exactly";
-}
+    B --> C
+    C -->|no| D
+    C -->|yes| E
+    D --> E
+    A --> E
+    E -->|"yes, even 1%"| F
+    E -->|"definitely not"| K
+    F --> G
+    G --> H
+    H -->|yes| I
+    H -->|no| J
+    I --> J
 ```
 
 ## Red Flags
