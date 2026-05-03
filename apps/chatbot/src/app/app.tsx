@@ -1,5 +1,12 @@
+import { Ui } from '@health-chatbot/ui';
+
 export function App() {
-  return <div>chatbot</div>;
+  return (
+    <div>
+      chatbot
+      <Ui />
+    </div>
+  );
 }
 
 export default App;
