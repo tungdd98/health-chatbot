@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 const HomePage = lazy(() =>
-  import('../pages/HomePage').then((module) => ({ default: module.HomePage })),
+  import('../pages/HomePage').then((module) => ({ default: module.HomePage }))
 );
 
 export function AppRouter() {
