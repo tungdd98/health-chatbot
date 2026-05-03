@@ -1,41 +1,24 @@
-## Summary
-
-<!--
-1-3 bullets on what changed and why.
-- ...
-- ...
--->
-
+# <Feature Title>
 ## Type of change
 
-- [ ] `feat` — new feature
-- [ ] `fix` — bug fix
-- [ ] `refactor` — code change that neither fixes a bug nor adds a feature
-- [ ] `docs` — documentation only
-- [ ] `chore` — build, tooling, or dependency update
+- [ ] Bug fix
+- [ ] Add new feature
+- [ ] Fix or update existing feature
+- [ ] Code style update (formatting, local variables)
+- [ ] Refactoring (no functional changes, no api changes)
+- [ ] Build related changes
+- [ ] CI related changes
+- [ ] Documentation update
+- [ ] Other
+## Why are you adding?
 
-## Screenshots
+## What are you adding?
 
-<!-- For UI changes, attach before/after screenshots. Otherwise write "N/A". -->
-
-N/A
-
-## New environment variables
-
-<!-- List any new vars required (name + example value). Otherwise write "None". -->
-
-None
-
-## Definition of Done
-
-- [ ] `yarn format` — no formatting errors
-- [ ] `yarn lint` — no lint errors
-- [ ] `yarn build` — builds successfully (for app-impacting changes)
-
-## Test plan
-
-<!--
-Steps to verify the change works end-to-end.
-1. ...
-2. ...
--->
+## Related PR(if applicable)
+## Checklist
+- [ ] I have provided an explanation of why and what I am adding
+- [ ] I read the ticket one more time and make sure everything is done as requested
+- [ ] My changes generate no new warnings
+- [ ] My code follows the established code style of this repository
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
