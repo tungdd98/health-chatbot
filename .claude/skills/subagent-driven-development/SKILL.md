@@ -278,7 +278,7 @@ Done!
 
 **Required workflow skills:**
 
-- **using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **isolating-feature-work** - REQUIRED: Set up isolated workspace before starting
 - **writing-plans** - Creates the plan this skill executes
 - **requesting-code-review** - Code review template for reviewer subagents
 - **finishing-a-development-branch** - Complete development after all tasks

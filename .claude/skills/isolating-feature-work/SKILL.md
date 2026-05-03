@@ -1,5 +1,5 @@
 ---
-name: using-git-worktrees
+name: isolating-feature-work
 description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - offers choice between git worktree isolation or simple feature branch checkout
 ---
 
@@ -14,7 +14,7 @@ Two modes for starting isolated feature work:
 
 **Core principle:** Use the simplest approach that gives the isolation you need.
 
-**Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
+**Announce at start:** "I'm using the isolating-feature-work skill to set up an isolated workspace."
 
 ## Choose Your Approach
 
@@ -261,7 +261,7 @@ Ready to implement <feature-name>
 
 **Path A — Worktree:**
 ```
-I'm using the using-git-worktrees skill to set up an isolated workspace.
+I'm using the isolating-feature-work skill to set up an isolated workspace.
 
 [No CLAUDE.md preference found → Ask user → User chose: worktree]
 [Check .worktrees/ - exists]
@@ -277,7 +277,7 @@ Ready to implement auth feature
 
 **Path B — Feature branch:**
 ```
-I'm using the using-git-worktrees skill to set up an isolated workspace.
+I'm using the isolating-feature-work skill to set up an isolated workspace.
 
 [No CLAUDE.md preference found → Ask user → User chose: feature branch]
 [git checkout -b feature/auth]
