@@ -86,10 +86,12 @@ git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/d
 
 **If NOT ignored:**
 
-Per Jesse's rule "Fix broken things immediately":
-1. Add appropriate line to .gitignore
-2. Commit the change
-3. Proceed with worktree creation
+Add to `.git/info/exclude` (local-only, not committed):
+```bash
+echo ".worktrees" >> "$(git rev-parse --git-dir)/info/exclude"
+```
+
+**Why `.git/info/exclude` over `.gitignore`:** Keeps worktree exclusion private to this machine — no noise in project history, no shared convention forced on teammates.
 
 **Why critical:** Prevents accidentally committing worktree contents to repository.
 
@@ -240,7 +242,7 @@ Ready to implement <feature-name>
 ### Skipping ignore verification (Path A)
 
 - **Problem:** Worktree contents get tracked, pollute git status
-- **Fix:** Always use `git check-ignore` before creating project-local worktree
+- **Fix:** Always use `git check-ignore` before creating project-local worktree; add to `.git/info/exclude` if not ignored
 
 ### Assuming directory location (Path A)
 
