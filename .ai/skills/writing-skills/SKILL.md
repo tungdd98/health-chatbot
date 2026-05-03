@@ -318,17 +318,16 @@ Use skill name only, with explicit requirement markers:
 
 ## Flowchart Usage
 
-```dot
-digraph when_flowchart {
-    "Need to show information?" [shape=diamond];
-    "Decision where I might go wrong?" [shape=diamond];
-    "Use markdown" [shape=box];
-    "Small inline flowchart" [shape=box];
+```mermaid
+flowchart TD
+    A{"Need to show information?"}
+    B{"Decision where I might go wrong?"}
+    C["Use markdown"]
+    D["Small inline flowchart"]
 
-    "Need to show information?" -> "Decision where I might go wrong?" [label="yes"];
-    "Decision where I might go wrong?" -> "Small inline flowchart" [label="yes"];
-    "Decision where I might go wrong?" -> "Use markdown" [label="no"];
-}
+    A -->|yes| B
+    B -->|yes| D
+    B -->|no| C
 ```
 
 **Use flowcharts ONLY for:**
@@ -344,9 +343,9 @@ digraph when_flowchart {
 - Linear instructions → Numbered lists
 - Labels without semantic meaning (step1, helper2)
 
-See @graphviz-conventions.dot for graphviz style rules.
+See @mermaid-conventions.mmd for Mermaid shape and style rules.
 
-**Visualizing for your human partner:** Use `render-graphs.js` in this directory to render a skill's flowcharts to SVG:
+**Visualizing for your human partner:** Use `render-graphs.js` in this directory to render legacy DOT files to SVG. This script does **not** support Mermaid diagrams — for Mermaid, use the preview in your editor or https://mermaid.live.
 
 ```bash
 ./render-graphs.js ../some-skill           # Each diagram separately
@@ -623,9 +622,10 @@ example-js.js, example-py.py, example-go.go
 
 ### ❌ Code in Flowcharts
 
-```dot
-step1 [label="import fs"];
-step2 [label="read file"];
+```mermaid
+flowchart TD
+    step1["import fs"]
+    step2["read file"]
 ```
 
 **Why bad:** Can't copy-paste, hard to read

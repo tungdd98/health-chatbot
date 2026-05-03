@@ -13,22 +13,21 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 ## When to Use
 
-```dot
-digraph when_to_use {
-    "Have implementation plan?" [shape=diamond];
-    "Tasks mostly independent?" [shape=diamond];
-    "Stay in this session?" [shape=diamond];
-    "subagent-driven-development" [shape=box];
-    "executing-plans" [shape=box];
-    "Manual execution or brainstorm first" [shape=box];
+```mermaid
+flowchart TD
+    A{"Have implementation plan?"}
+    B{"Tasks mostly independent?"}
+    C{"Stay in this session?"}
+    D["subagent-driven-development"]
+    E["executing-plans"]
+    F["Manual execution or brainstorm first"]
 
-    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
-    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
-    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
-    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
-    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
-    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
-}
+    A -->|yes| B
+    A -->|no| F
+    B -->|yes| C
+    B -->|"no - tightly coupled"| F
+    C -->|yes| D
+    C -->|"no - parallel session"| E
 ```
 
 **vs. Executing Plans (parallel session):**
@@ -42,51 +41,50 @@ digraph when_to_use {
 
 **First step, always:** Use the `isolating-feature-work` skill to set up an isolated workspace. Do not begin task execution until this is complete.
 
-```dot
-digraph process {
-    rankdir=TB;
+```mermaid
+flowchart TD
+    isolate["Use isolating-feature-work skill"]
+    read["Read plan, extract all tasks with full text, note context, create TodoWrite"]
+    moreTasks{"More tasks remain?"}
+    finalReview["Dispatch final code reviewer subagent for entire implementation"]
+    finish["Use finishing-a-development-branch"]
 
-    subgraph cluster_per_task {
-        label="Per Task";
-        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
-        "Implementer subagent asks questions?" [shape=diamond];
-        "Answer questions, provide context" [shape=box];
-        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
-        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
-        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
-        "Implementer subagent fixes spec gaps" [shape=box];
-        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
-        "Code quality reviewer subagent approves?" [shape=diamond];
-        "Implementer subagent fixes quality issues" [shape=box];
-        "Mark task complete in TodoWrite" [shape=box];
-    }
+    subgraph perTask ["Per Task"]
+        dispatch["Dispatch implementer subagent (./implementer-prompt.md)"]
+        questions{"Implementer subagent asks questions?"}
+        answer["Answer questions, provide context"]
+        implement["Implementer subagent implements, tests, commits, self-reviews"]
+        specReview["Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)"]
+        specMatch{"Spec reviewer subagent confirms code matches spec?"}
+        fixSpec["Implementer subagent fixes spec gaps"]
+        qualReview["Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)"]
+        qualApprove{"Code quality reviewer subagent approves?"}
+        fixQuality["Implementer subagent fixes quality issues"]
+        markDone["Mark task complete in TodoWrite"]
+    end
 
-    "Use isolating-feature-work skill" [shape=box style=filled fillcolor=lightyellow];
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
-    "More tasks remain?" [shape=diamond];
-    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    isolate --> read
+    read --> dispatch
+    dispatch --> questions
+    questions -->|yes| answer
+    answer --> dispatch
+    questions -->|no| implement
+    implement --> specReview
+    specReview --> specMatch
+    specMatch -->|no| fixSpec
+    fixSpec -->|re-review| specReview
+    specMatch -->|yes| qualReview
+    qualReview --> qualApprove
+    qualApprove -->|no| fixQuality
+    fixQuality -->|re-review| qualReview
+    qualApprove -->|yes| markDone
+    markDone --> moreTasks
+    moreTasks -->|yes| dispatch
+    moreTasks -->|no| finalReview
+    finalReview --> finish
 
-    "Use isolating-feature-work skill" -> "Read plan, extract all tasks with full text, note context, create TodoWrite";
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
-    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
-    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
-    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
-    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
-    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
-    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
-    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
-    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
-    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
-    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
-    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
-    "Mark task complete in TodoWrite" -> "More tasks remain?";
-    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
-    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use finishing-a-development-branch";
-}
+    style isolate fill:#ffffe0
+    style finish fill:#90ee90
 ```
 
 ## Model Selection
