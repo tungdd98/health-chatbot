@@ -15,11 +15,15 @@ link() {
 
 echo "==> Claude Code"
 mkdir -p .claude
-link ../.ai/skills .claude/skills
+link ../.ai/skills  .claude/skills
+link ../.ai/agents  .claude/agents
+link ../.ai/hooks   .claude/hooks
 
 echo "==> Codex / other agents"
 mkdir -p .agents
-link ../.ai/skills .agents/skills
+link ../.ai/skills  .agents/skills
+link ../.ai/agents  .agents/agents
+link ../.ai/hooks   .agents/hooks
 
 echo "==> Root instruction files"
 link .ai/instructions/base.md CLAUDE.md
