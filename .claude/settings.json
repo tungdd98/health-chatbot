@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_PLUGIN_ROOT=/Users/mac/Desktop/health-chatbot/.ai bash /Users/mac/Desktop/health-chatbot/.ai/hooks/run-hook.cmd session-start",
+            "async": false
+          }
+        ]
+      }
+    ]
+  }
+}
