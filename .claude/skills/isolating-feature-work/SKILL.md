@@ -228,7 +228,7 @@ Ready to implement <feature-name>
 | `worktrees/` exists | Use it (verify ignored) |
 | Both exist | Use `.worktrees/` |
 | Neither exists | Check CLAUDE.md → Ask user |
-| Directory not ignored | Add to .gitignore + commit |
+| Directory not ignored | Add to `.git/info/exclude` |
 
 **Both paths:**
 
