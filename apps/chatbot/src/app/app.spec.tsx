@@ -8,8 +8,8 @@ describe('App', () => {
     expect(baseElement).toBeInTheDocument();
   });
 
-  it('should render the chatbot shell', () => {
-    const { getByText } = render(<App />);
-    expect(getByText('chatbot')).toBeInTheDocument();
+  it('should render the chatbot shell', async () => {
+    const { findByText } = render(<App />);
+    expect(await findByText('Health Chatbot')).toBeInTheDocument();
   });
 });
