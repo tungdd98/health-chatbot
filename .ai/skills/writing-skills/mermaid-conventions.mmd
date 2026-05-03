@@ -1,0 +1,56 @@
+%%{init: {'theme': 'default'}}%%
+flowchart TD
+
+    %% ─── SHAPE SELECTION ───────────────────────────────────────────────────────
+    %% Use this decision tree to pick the right Mermaid node shape.
+
+    choosing(["Choosing a shape"])
+    isDecision{"Is it a decision?"}
+    useDiamond{"Use  { }  diamond"}
+    isCommand{"Is it a literal command?"}
+    useCmd["`Use backtick node`"]
+    isWarning{"Is it a critical warning?"}
+    useWarn["Use styled red box"]
+    isEntry{"Is it entry or exit?"}
+    useDouble((("Use  ((( )))  double circle")))
+    isState{"Is it a current state?"}
+    useStadium(["Use  ([ ])  stadium"])
+    useBox["Default: use  [ ]  rectangle"]
+
+    choosing --> isDecision
+    isDecision -->|yes| useDiamond
+    isDecision -->|no| isCommand
+    isCommand -->|yes| useCmd
+    isCommand -->|no| isWarning
+    isWarning -->|yes| useWarn
+    isWarning -->|no| isEntry
+    isEntry -->|yes| useDouble
+    isEntry -->|no| isState
+    isState -->|yes| useStadium
+    isState -->|no| useBox
+
+    style useWarn fill:#ff0000,color:#ffffff
+
+    %% ─── EDGE LABEL CONVENTIONS ────────────────────────────────────────────────
+    %% Binary:     A -->|yes| B      A -->|no| B
+    %% Condition:  A -->|"condition text"| B   (quote multi-word labels)
+    %% Trigger:    A -.->|triggers| B          (dotted = async / event-driven)
+
+    %% ─── NAMING CONVENTIONS ─────────────────────────────────────────────────────
+    %% Questions:  end with ?          "Should I do X?"   "Is Z true?"
+    %% Actions:    start with verb     "Write the test"   "Commit changes"
+    %% Commands:   backtick node       use `npm test` not "run npm test"
+    %% States:     describe situation  "Test is failing"  "Build complete"
+    %% Warnings:   ALL CAPS + verb     "NEVER ignore errors"
+
+    %% ─── GOOD VS BAD ────────────────────────────────────────────────────────────
+    %% GOOD: semantic node IDs, descriptive labels, correct shapes
+    %%   testFailed(["Test failed"])  -->  readError["Read error message"]
+    %%   readError --> canReproduce{"Can reproduce?"}
+    %%   canReproduce -->|yes| gitCmd["`git diff HEAD~1`"]
+    %%
+    %% BAD: vague labels, wrong shapes, meaningless IDs
+    %%   n1["Something wrong"]   -- should be state ([ ])
+    %%   n2["Fix it"]            -- too vague, no verb precision
+    %%   n3["Check"]             -- should be decision { }
+    %%   n4["Run command"]       -- should be backtick node with actual command
