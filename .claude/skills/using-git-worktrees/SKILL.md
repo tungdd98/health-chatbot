@@ -1,17 +1,42 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - offers choice between git worktree isolation or simple feature branch checkout
 ---
 
 # Using Git Worktrees
 
 ## Overview
 
-Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching.
+Two modes for starting isolated feature work:
 
-**Core principle:** Systematic directory selection + safety verification = reliable isolation.
+- **Worktree** — separate working directory, work multiple branches simultaneously without switching
+- **Feature branch** — simple `checkout -b`, lighter weight, sufficient when one active context is enough
+
+**Core principle:** Use the simplest approach that gives the isolation you need.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
+
+## Choose Your Approach
+
+Check CLAUDE.md for a preference first. If none, ask the user:
+
+```
+Starting isolated workspace for <feature-name>.
+
+Which approach would you prefer?
+1. Git worktree (separate directory, current branch stays active in parallel)
+2. Feature branch checkout (lightweight, switch context in place)
+```
+
+| Prefer worktree when... | Prefer feature branch when... |
+|---|---|
+| Need current branch active simultaneously | Only one context needed at a time |
+| Long-running parallel work | Short or focused feature |
+| Project already has worktree convention | Simple personal workflow / no worktree setup |
+
+---
+
+## Path A: Git Worktree
 
 ## Directory Selection Process
 
@@ -141,26 +166,83 @@ Tests passing (<N> tests, 0 failures)
 Ready to implement <feature-name>
 ```
 
+---
+
+## Path B: Feature Branch Checkout
+
+### 1. Create and Switch Branch
+
+```bash
+git checkout -b feature/<branch-name>
+```
+
+### 2. Run Project Setup
+
+Same auto-detection as worktree path:
+
+```bash
+if [ -f package.json ]; then npm install; fi
+if [ -f Cargo.toml ]; then cargo build; fi
+if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+if [ -f pyproject.toml ]; then poetry install; fi
+if [ -f go.mod ]; then go mod download; fi
+```
+
+### 3. Verify Clean Baseline
+
+```bash
+# Use project-appropriate command
+npm test / cargo test / pytest / go test ./...
+```
+
+**If tests fail:** Report failures, ask whether to proceed or investigate.
+
+### 4. Report Ready
+
+```
+Branch feature/<name> created and checked out.
+Tests passing (<N> tests, 0 failures)
+Ready to implement <feature-name>
+```
+
+---
+
 ## Quick Reference
 
+**Approach selection:**
+
+| Situation | Recommended |
+|---|---|
+| Need parallel branches active | Worktree |
+| Simple single-context feature | Feature branch |
+| CLAUDE.md specifies preference | Follow it |
+| No preference → | Ask user |
+
+**Worktree directory (Path A):**
+
 | Situation | Action |
-|-----------|--------|
+|---|---|
 | `.worktrees/` exists | Use it (verify ignored) |
 | `worktrees/` exists | Use it (verify ignored) |
 | Both exist | Use `.worktrees/` |
 | Neither exists | Check CLAUDE.md → Ask user |
 | Directory not ignored | Add to .gitignore + commit |
+
+**Both paths:**
+
+| Situation | Action |
+|---|---|
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
 
 ## Common Mistakes
 
-### Skipping ignore verification
+### Skipping ignore verification (Path A)
 
 - **Problem:** Worktree contents get tracked, pollute git status
 - **Fix:** Always use `git check-ignore` before creating project-local worktree
 
-### Assuming directory location
+### Assuming directory location (Path A)
 
 - **Problem:** Creates inconsistency, violates project conventions
 - **Fix:** Follow priority: existing > CLAUDE.md > ask
@@ -175,11 +257,13 @@ Ready to implement <feature-name>
 - **Problem:** Breaks on projects using different tools
 - **Fix:** Auto-detect from project files (package.json, etc.)
 
-## Example Workflow
+## Example Workflows
 
+**Path A — Worktree:**
 ```
-You: I'm using the using-git-worktrees skill to set up an isolated workspace.
+I'm using the using-git-worktrees skill to set up an isolated workspace.
 
+[No CLAUDE.md preference found → Ask user → User chose: worktree]
 [Check .worktrees/ - exists]
 [Verify ignored - git check-ignore confirms .worktrees/ is ignored]
 [Create worktree: git worktree add .worktrees/auth -b feature/auth]
@@ -187,6 +271,20 @@ You: I'm using the using-git-worktrees skill to set up an isolated workspace.
 [Run npm test - 47 passing]
 
 Worktree ready at /Users/jesse/myproject/.worktrees/auth
+Tests passing (47 tests, 0 failures)
+Ready to implement auth feature
+```
+
+**Path B — Feature branch:**
+```
+I'm using the using-git-worktrees skill to set up an isolated workspace.
+
+[No CLAUDE.md preference found → Ask user → User chose: feature branch]
+[git checkout -b feature/auth]
+[Run npm install]
+[Run npm test - 47 passing]
+
+Branch feature/auth created and checked out.
 Tests passing (47 tests, 0 failures)
 Ready to implement auth feature
 ```
@@ -201,8 +299,9 @@ Ready to implement auth feature
 - Skip CLAUDE.md check
 
 **Always:**
-- Follow directory priority: existing > CLAUDE.md > ask
-- Verify directory is ignored for project-local
+- Ask user (or check CLAUDE.md) before choosing worktree vs feature branch
+- Follow directory priority: existing > CLAUDE.md > ask (Path A)
+- Verify directory is ignored for project-local (Path A)
 - Auto-detect and run project setup
 - Verify clean test baseline
 
