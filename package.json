@@ -9,13 +9,12 @@
     "start": "nx serve chatbot",
     "affected:test": "nx affected:test",
     "affected:lint": "nx affected:lint",
-    "prepare": "husky"
+    "prepare": "if [ -x node_modules/.bin/husky ]; then husky; fi"
   },
   "devDependencies": {
     "@nx/eslint": "^22.7.1",
     "@nx/react": "^22.7.1",
     "@nx/vite": "^22.7.1",
-    "husky": "^9.1.7",
     "nx": "^22.7.1",
     "typescript": "^5.9.3"
   }
