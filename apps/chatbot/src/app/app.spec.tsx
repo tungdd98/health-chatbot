@@ -8,7 +8,7 @@ describe('App', () => {
     expect(baseElement).toBeInTheDocument();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should render the chatbot shell', () => {
     const { getByText } = render(<App />);
     expect(getByText('chatbot')).toBeInTheDocument();
   });
