@@ -92,8 +92,26 @@ Then: Cleanup worktree (Step 5)
 ```bash
 # Push branch
 git push -u origin <feature-branch>
+```
 
-# Create PR
+Check for PR template:
+
+```bash
+cat .github/PULL_REQUEST_TEMPLATE.md 2>/dev/null
+```
+
+**If template exists:** Fill in all sections from the template, then:
+
+```bash
+gh pr create --title "<title>" --body-file <(cat <<'EOF'
+<filled-in template content>
+EOF
+)
+```
+
+**If no template:** Use default format:
+
+```bash
 gh pr create --title "<title>" --body "$(cat <<'EOF'
 ## Summary
 <2-3 bullets of what changed>
