@@ -40,6 +40,8 @@ digraph when_to_use {
 
 ## The Process
 
+**First step, always:** Use the `isolating-feature-work` skill to set up an isolated workspace. Do not begin task execution until this is complete.
+
 ```dot
 digraph process {
     rankdir=TB;
@@ -59,11 +61,13 @@ digraph process {
         "Mark task complete in TodoWrite" [shape=box];
     }
 
+    "Use isolating-feature-work skill" [shape=box style=filled fillcolor=lightyellow];
     "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
     "Use finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
+    "Use isolating-feature-work skill" -> "Read plan, extract all tasks with full text, note context, create TodoWrite";
     "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
     "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
@@ -131,6 +135,7 @@ Implementer subagents report one of four statuses. Handle each appropriately:
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
+[Invoke isolating-feature-work skill → workspace isolated on feature branch]
 [Read plan file once: docs/superpowers/plans/feature-plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
