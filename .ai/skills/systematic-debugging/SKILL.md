@@ -17,9 +17,23 @@ Random fixes waste time and create new bugs. Quick patches mask underlying issue
 
 ```
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+NO PLAN WITHOUT USER APPROVAL
+NO EXECUTION WITHOUT USER APPROVAL
 ```
 
-If you haven't completed Phase 1, you cannot propose fixes.
+## The Flow
+
+```
+Phase 1-3: Investigate
+     ↓
+Phase 3.5: Report to user → WAIT for approval
+     ↓ (approved)
+Phase 3.7: Create plan → WAIT for approval
+     ↓ (approved)
+Phase 4: Execute
+```
+
+**You have TWO mandatory stops before writing any code.** Skip either one and you are violating this process.
 
 ## When to Use
 
@@ -46,7 +60,7 @@ Use for ANY technical issue:
 - You're in a hurry (rushing guarantees rework)
 - Manager wants it fixed NOW (systematic is faster than thrashing)
 
-## The Four Phases
+## The Phases
 
 You MUST complete each phase before proceeding to the next.
 
@@ -162,7 +176,7 @@ You MUST complete each phase before proceeding to the next.
    - Don't fix multiple things at once
 
 3. **Verify Before Continuing**
-   - Did it work? Yes → Phase 4
+   - Did it work? Yes → Phase 3.5
    - Didn't work? Form NEW hypothesis
    - DON'T add more fixes on top
 
@@ -172,9 +186,66 @@ You MUST complete each phase before proceeding to the next.
    - Ask for help
    - Research more
 
+### Phase 3.5: Bug Report Gate — WAIT FOR USER APPROVAL
+
+**YOU CANNOT PROCEED UNTIL THE USER APPROVES THIS REPORT.**
+
+Present a structured bug report and stop. Do not create a plan. Do not touch code.
+
+**Bug report format:**
+
+```
+## Bug Report
+
+**Symptom:** [what the user observed / what error occurred]
+**Root cause:** [the specific reason it breaks, with file:line reference]
+**Evidence:** [what you found — error messages, stack traces, code you read]
+**Affected:** [file paths and line numbers involved]
+**Confidence:** High / Medium / Low — [why]
+```
+
+After presenting the report, use `AskUserQuestion` to pause:
+
+> "Does this root cause analysis look correct? Approve to proceed to fix planning, or let me know if you see it differently."
+
+**If user rejects or redirects** → return to Phase 1 with new information.  
+**If user approves** → proceed to Phase 3.7.
+
+**This stop is not optional:**
+
+- Root cause is obvious to you → still report and wait
+- Bug is simple → still report and wait
+- You're under time pressure → ESPECIALLY report and wait
+
+### Phase 3.7: Fix Plan Gate — WAIT FOR USER APPROVAL
+
+**YOU CANNOT WRITE CODE UNTIL THE USER APPROVES THIS PLAN.**
+
+After the user approves the bug report, call `TaskCreate` to create the fix plan, then present it and stop.
+
+**TaskCreate format:**
+
+```
+title: Fix [specific bug]
+description: |
+  Root cause: [one sentence from approved bug report]
+  Fix: [single file, single change — be specific]
+  Test: [how you will verify it works]
+  Out of scope: [things you will NOT touch — name them explicitly]
+```
+
+**"Out of scope" is mandatory.** It prevents bundling. If you cannot name what you are NOT fixing, you do not understand the scope.
+
+After creating the task, present the plan and use `AskUserQuestion` to pause:
+
+> "Fix plan created. Does this look good? Approve to start implementation."
+
+**If user requests changes** → update the task and wait again.  
+**If user approves** → proceed to Phase 4.
+
 ### Phase 4: Implementation
 
-**Fix the root cause, not the symptom:**
+**Fix the root cause, not the symptom. Only start after Phase 3.7 is approved.**
 
 1. **Create Failing Test Case**
    - Simplest possible reproduction
@@ -232,6 +303,11 @@ If you catch yourself thinking:
 - Proposing solutions before tracing data flow
 - **"One more fix attempt" (when already tried 2+)**
 - **Each fix reveals new problem in different place**
+- **"Root cause is clear, I'll just fix it now"** — skipping Phase 3.5 report
+- Saying "Now creating the task plan" **without calling TaskCreate tool**
+- **"Applying both now"** / "also updating X" — bundling multiple changes
+- Moving to Phase 3.7 **without user approval of the bug report**
+- Moving to Phase 4 **without user approval of the fix plan**
 
 **ALL of these mean: STOP. Return to Phase 1.**
 
@@ -261,15 +337,20 @@ If you catch yourself thinking:
 | "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely.              |
 | "I see the problem, let me fix it"           | Seeing symptoms ≠ understanding root cause.                             |
 | "One more fix attempt" (after 2+ failures)   | 3+ failures = architectural problem. Question pattern, don't fix again. |
+| "Root cause is obvious, I'll skip report"    | Obvious to you ≠ obvious to user. Report first, always.                 |
+| "User will approve the report anyway"        | User approval is not a formality — it's a checkpoint. Wait for it.      |
+| "TaskPlan is overhead for a small fix"       | Phase 3.7 takes 30 seconds. Fixing the wrong thing wastes 30 minutes.   |
 
 ## Quick Reference
 
-| Phase                 | Key Activities                                         | Success Criteria            |
-| --------------------- | ------------------------------------------------------ | --------------------------- |
-| **1. Root Cause**     | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY     |
-| **2. Pattern**        | Find working examples, compare                         | Identify differences        |
-| **3. Hypothesis**     | Form theory, test minimally                            | Confirmed or new hypothesis |
-| **4. Implementation** | Create test, fix, verify                               | Bug resolved, tests pass    |
+| Phase             | Key Activities                                         | Gate to next phase       |
+| ----------------- | ------------------------------------------------------ | ------------------------ |
+| **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY  |
+| **2. Pattern**    | Find working examples, compare                         | Identify differences     |
+| **3. Hypothesis** | Form theory, test minimally                            | Confirmed hypothesis     |
+| **3.5. Report**   | Present bug report → AskUserQuestion → WAIT            | **User approves report** |
+| **3.7. Plan**     | TaskCreate fix plan → Present → AskUserQuestion → WAIT | **User approves plan**   |
+| **4. Execute**    | Create failing test, implement single fix, verify      | Bug resolved, tests pass |
 
 ## When Process Reveals "No Root Cause"
 

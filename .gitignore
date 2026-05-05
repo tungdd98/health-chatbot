@@ -1,2 +1,21 @@
-docs/specs
-docs/plans
+# NX
+.nx/cache
+.nx/workspace-data
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+*.local
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
