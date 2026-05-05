@@ -26,11 +26,11 @@ NO EXECUTION WITHOUT USER APPROVAL
 ```
 Phase 1-3: Investigate
      ↓
-Phase 3.5: Report to user → WAIT for approval
+Phase 4: Report to user → Write bug report file → WAIT for approval
      ↓ (approved)
-Phase 3.7: Create plan → WAIT for approval
+Phase 5: Invoke writing-plans → full plan → User review plan ok
      ↓ (approved)
-Phase 4: Execute
+Phase 6: isolating-feature-work → subagent-driven-development / executing-plans
 ```
 
 **You have TWO mandatory stops before writing any code.** Skip either one and you are violating this process.
@@ -176,7 +176,7 @@ You MUST complete each phase before proceeding to the next.
    - Don't fix multiple things at once
 
 3. **Verify Before Continuing**
-   - Did it work? Yes → Phase 3.5
+   - Did it work? Yes → Phase 4
    - Didn't work? Form NEW hypothesis
    - DON'T add more fixes on top
 
@@ -186,7 +186,7 @@ You MUST complete each phase before proceeding to the next.
    - Ask for help
    - Research more
 
-### Phase 3.5: Bug Report Gate — WAIT FOR USER APPROVAL
+### Phase 4: Bug Report Gate — WAIT FOR USER APPROVAL
 
 **YOU CANNOT PROCEED UNTIL THE USER APPROVES THIS REPORT.**
 
@@ -209,7 +209,7 @@ After presenting the report, use `AskUserQuestion` to pause:
 > "Does this root cause analysis look correct? Approve to proceed to fix planning, or let me know if you see it differently."
 
 **If user rejects or redirects** → return to Phase 1 with new information.  
-**If user approves** → proceed to Phase 3.7.
+**If user approves** → proceed to Phase 5.
 
 **This stop is not optional:**
 
@@ -217,7 +217,7 @@ After presenting the report, use `AskUserQuestion` to pause:
 - Bug is simple → still report and wait
 - You're under time pressure → ESPECIALLY report and wait
 
-### Phase 3.7: Fix Plan Gate — WAIT FOR USER APPROVAL
+### Phase 5: Fix Plan
 
 **YOU CANNOT WRITE CODE UNTIL THE USER APPROVES THIS PLAN.**
 
@@ -241,11 +241,11 @@ After creating the task, present the plan and use `AskUserQuestion` to pause:
 > "Fix plan created. Does this look good? Approve to start implementation."
 
 **If user requests changes** → update the task and wait again.  
-**If user approves** → proceed to Phase 4.
+**If user approves** → proceed to Phase 6.
 
-### Phase 4: Implementation
+### Phase 6: Implementation
 
-**Fix the root cause, not the symptom. Only start after Phase 3.7 is approved.**
+**Fix the root cause, not the symptom. Only start after Phase 5 is approved.**
 
 1. **Create Failing Test Case**
    - Simplest possible reproduction
@@ -303,15 +303,15 @@ If you catch yourself thinking:
 - Proposing solutions before tracing data flow
 - **"One more fix attempt" (when already tried 2+)**
 - **Each fix reveals new problem in different place**
-- **"Root cause is clear, I'll just fix it now"** — skipping Phase 3.5 report
+- **"Root cause is clear, I'll just fix it now"** — skipping Phase 4 report
 - Saying "Now creating the task plan" **without calling TaskCreate tool**
 - **"Applying both now"** / "also updating X" — bundling multiple changes
-- Moving to Phase 3.7 **without user approval of the bug report**
+- Moving to Phase 5 **without user approval of the bug report**
 - Moving to Phase 4 **without user approval of the fix plan**
 
 **ALL of these mean: STOP. Return to Phase 1.**
 
-**If 3+ fixes failed:** Question the architecture (see Phase 4.5)
+**If 3+ fixes failed:** Question the architecture (see Phase 6, step 5)
 
 ## your human partner's Signals You're Doing It Wrong
 
@@ -339,7 +339,7 @@ If you catch yourself thinking:
 | "One more fix attempt" (after 2+ failures)   | 3+ failures = architectural problem. Question pattern, don't fix again. |
 | "Root cause is obvious, I'll skip report"    | Obvious to you ≠ obvious to user. Report first, always.                 |
 | "User will approve the report anyway"        | User approval is not a formality — it's a checkpoint. Wait for it.      |
-| "TaskPlan is overhead for a small fix"       | Phase 3.7 takes 30 seconds. Fixing the wrong thing wastes 30 minutes.   |
+| "TaskPlan is overhead for a small fix"       | Phase 5 takes 30 seconds. Fixing the wrong thing wastes 30 minutes.     |
 
 ## Quick Reference
 
