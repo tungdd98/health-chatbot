@@ -348,9 +348,9 @@ If you catch yourself thinking:
 | **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY  |
 | **2. Pattern**    | Find working examples, compare                         | Identify differences     |
 | **3. Hypothesis** | Form theory, test minimally                            | Confirmed hypothesis     |
-| **3.5. Report**   | Present bug report → AskUserQuestion → WAIT            | **User approves report** |
-| **3.7. Plan**     | TaskCreate fix plan → Present → AskUserQuestion → WAIT | **User approves plan**   |
-| **4. Execute**    | Create failing test, implement single fix, verify      | Bug resolved, tests pass |
+| **4. Report**     | Present bug report → AskUserQuestion → WAIT            | **User approves report** |
+| **5. Plan**       | TaskCreate fix plan → Present → AskUserQuestion → WAIT | **User approves plan**   |
+| **6. Execute**    | Create failing test, implement single fix, verify      | Bug resolved, tests pass |
 
 ## When Process Reveals "No Root Cause"
 
