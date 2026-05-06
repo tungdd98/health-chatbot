@@ -60,7 +60,7 @@ flowchart TD
         qualReview["Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)"]
         qualApprove{"Code quality reviewer subagent approves?"}
         fixQuality["Implementer subagent fixes quality issues"]
-        markDone["Mark task complete in TodoWrite + update checkbox in plan file (no commit)"]
+        markDone["✅ Mark task complete in TodoWrite AND check off checkbox in plan file (no commit)"]
     end
 
     isolate --> read
@@ -86,6 +86,15 @@ flowchart TD
     style isolate fill:#ffffe0
     style finish fill:#90ee90
 ```
+
+## Tracking Task Completion
+
+After each task is approved by both reviewers, you **must** do two things before moving to the next task:
+
+1. Mark the task `completed` in TodoWrite
+2. Update the checkbox in `docs/plans/<feature>.md` from `- [ ]` to `- [x]` for that task
+
+The plan file checkbox update must happen in-place (no separate commit). This keeps the plan file current so you and the human can see progress at a glance. Skipping either step is a violation — see Red Flags.
 
 ## Model Selection
 
@@ -248,6 +257,7 @@ Done!
 
 - Start implementation on main/master branch without explicit user consent
 - Commit the plan file (`docs/plans/`) — update checkboxes in place only, plan files are not part of the deliverable
+- Skip updating the plan file checkbox after a task completes — both TodoWrite AND the plan file checkbox must be updated together
 - Skip reviews (spec compliance OR code quality)
 - Proceed with unfixed issues
 - Dispatch multiple implementation subagents in parallel (conflicts)
