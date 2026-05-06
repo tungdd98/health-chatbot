@@ -297,10 +297,9 @@ If you catch yourself thinking:
 - **"One more fix attempt" (when already tried 2+)**
 - **Each fix reveals new problem in different place**
 - **"Root cause is clear, I'll just fix it now"** — skipping Phase 4 report
-- Saying "Now creating the task plan" **without calling TaskCreate tool**
-- **"Applying both now"** / "also updating X" — bundling multiple changes
-- Moving to Phase 5 **without user approval of the bug report**
-- Moving to Phase 4 **without user approval of the fix plan**
+- Moving to Phase 5 **without user approval of the bug report (Phase 4)**
+- Moving to Phase 6 **without user approval of the fix plan (Phase 5)**
+- Skipping `isolating-feature-work` before implementation
 
 **ALL of these mean: STOP. Return to Phase 1.**
 
@@ -320,19 +319,19 @@ If you catch yourself thinking:
 
 ## Common Rationalizations
 
-| Excuse                                       | Reality                                                                 |
-| -------------------------------------------- | ----------------------------------------------------------------------- |
-| "Issue is simple, don't need process"        | Simple issues have root causes too. Process is fast for simple bugs.    |
-| "Emergency, no time for process"             | Systematic debugging is FASTER than guess-and-check thrashing.          |
-| "Just try this first, then investigate"      | First fix sets the pattern. Do it right from the start.                 |
-| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it.                       |
-| "Multiple fixes at once saves time"          | Can't isolate what worked. Causes new bugs.                             |
-| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely.              |
-| "I see the problem, let me fix it"           | Seeing symptoms ≠ understanding root cause.                             |
-| "One more fix attempt" (after 2+ failures)   | 3+ failures = architectural problem. Question pattern, don't fix again. |
-| "Root cause is obvious, I'll skip report"    | Obvious to you ≠ obvious to user. Report first, always.                 |
-| "User will approve the report anyway"        | User approval is not a formality — it's a checkpoint. Wait for it.      |
-| "TaskPlan is overhead for a small fix"       | Phase 5 takes 30 seconds. Fixing the wrong thing wastes 30 minutes.     |
+| Excuse                                       | Reality                                                                   |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| "Issue is simple, don't need process"        | Simple issues have root causes too. Process is fast for simple bugs.      |
+| "Emergency, no time for process"             | Systematic debugging is FASTER than guess-and-check thrashing.            |
+| "Just try this first, then investigate"      | First fix sets the pattern. Do it right from the start.                   |
+| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it.                         |
+| "Multiple fixes at once saves time"          | Can't isolate what worked. Causes new bugs.                               |
+| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely.                |
+| "I see the problem, let me fix it"           | Seeing symptoms ≠ understanding root cause.                               |
+| "One more fix attempt" (after 2+ failures)   | 3+ failures = architectural problem. Question pattern, don't fix again.   |
+| "Root cause is obvious, I'll skip report"    | Obvious to you ≠ obvious to user. Report first, always.                   |
+| "User will approve the report anyway"        | User approval is not a formality — it's a checkpoint. Wait for it.        |
+| "writing-plans is overhead for a small fix"  | Phase 5 ensures the right thing gets fixed. Skipping it wastes more time. |
 
 ## Quick Reference
 
@@ -341,9 +340,9 @@ If you catch yourself thinking:
 | **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY  |
 | **2. Pattern**    | Find working examples, compare                         | Identify differences     |
 | **3. Hypothesis** | Form theory, test minimally                            | Confirmed hypothesis     |
-| **4. Report**     | Present bug report → AskUserQuestion → WAIT            | **User approves report** |
-| **5. Plan**       | TaskCreate fix plan → Present → AskUserQuestion → WAIT | **User approves plan**   |
-| **6. Execute**    | Create failing test, implement single fix, verify      | Bug resolved, tests pass |
+| **4. Report**     | Present bug report → Write file → Self-review → WAIT   | **User approves report** |
+| **5. Fix Plan**   | Invoke writing-plans → docs/plans/ → WAIT              | **User approves plan**   |
+| **6. Execute**    | isolating-feature-work → subagent or executing-plans   | Fix resolved, verified   |
 
 ## When Process Reveals "No Root Cause"
 
@@ -366,8 +365,12 @@ These techniques are part of systematic debugging and available in this director
 
 **Related skills:**
 
-- **test-driven-development** - For creating failing test case (Phase 4, Step 1)
-- **verification-before-completion** - Verify fix worked before claiming success
+- **writing-plans** - REQUIRED: Create fix plan in Phase 5
+- **isolating-feature-work** - REQUIRED: Isolate workspace before Phase 6
+- **subagent-driven-development** - Recommended execution path in Phase 6
+- **executing-plans** - Alternative execution path in Phase 6
+- **test-driven-development** - Subagents follow TDD during implementation
+- **verification-before-completion** - Verify fix before claiming success
 
 ## Real-World Impact
 
