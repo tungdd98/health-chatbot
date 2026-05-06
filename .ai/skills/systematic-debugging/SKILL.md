@@ -230,29 +230,23 @@ Wait for user response. If changes requested → update file and re-run self-rev
 
 ### Phase 5: Fix Plan
 
-**YOU CANNOT WRITE CODE UNTIL THE USER APPROVES THIS PLAN.**
+**YOU CANNOT START IMPLEMENTATION UNTIL THE USER APPROVES THIS PLAN.**
 
-After the user approves the bug report, call `TaskCreate` to create the fix plan, then present it and stop.
+After the user approves the bug report, invoke the `writing-plans` skill.
 
-**TaskCreate format:**
+**Steps:**
 
-```
-title: Fix [specific bug]
-description: |
-  Root cause: [one sentence from approved bug report]
-  Fix: [single file, single change — be specific]
-  Test: [how you will verify it works]
-  Out of scope: [things you will NOT touch — name them explicitly]
-```
+1. Invoke `writing-plans` skill, scoped to the approved bug report
+2. writing-plans creates the plan at `docs/plans/YYYY-MM-DD-<bug-name>-fix.md`
+3. writing-plans self-reviews the plan
+4. writing-plans presents Execution Handoff — user selects:
+   - **Subagent-Driven (recommended)** → `subagent-driven-development`
+   - **Inline Execution** → `executing-plans`
+5. User selection = plan approval → proceed to Phase 6
 
-**"Out of scope" is mandatory.** It prevents bundling. If you cannot name what you are NOT fixing, you do not understand the scope.
+**The plan's architecture section MUST include an "Out of scope" field** naming what will NOT be fixed. This prevents bundling unrelated changes. If you cannot name what is out of scope, you do not understand the fix boundary.
 
-After creating the task, present the plan and use `AskUserQuestion` to pause:
-
-> "Fix plan created. Does this look good? Approve to start implementation."
-
-**If user requests changes** → update the task and wait again.  
-**If user approves** → proceed to Phase 6.
+**If user requests plan changes** → update plan and wait again before proceeding.
 
 ### Phase 6: Implementation
 
