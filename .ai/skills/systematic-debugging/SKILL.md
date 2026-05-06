@@ -190,9 +190,9 @@ You MUST complete each phase before proceeding to the next.
 
 **YOU CANNOT PROCEED UNTIL THE USER APPROVES THIS REPORT.**
 
-Present a structured bug report and stop. Do not create a plan. Do not touch code.
+Present a structured bug report, write it to a file, self-review it, then wait for user approval.
 
-**Bug report format:**
+**Step 1 — Present bug report inline:**
 
 ```
 ## Bug Report
@@ -204,18 +204,29 @@ Present a structured bug report and stop. Do not create a plan. Do not touch cod
 **Confidence:** High / Medium / Low — [why]
 ```
 
-After presenting the report, use `AskUserQuestion` to pause:
+**Step 2 — Write to file:** `docs/specs/YYYY-MM-DD-<bug-name>-bug-report.md`
 
-> "Does this root cause analysis look correct? Approve to proceed to fix planning, or let me know if you see it differently."
+Use the same format as above.
 
-**If user rejects or redirects** → return to Phase 1 with new information.  
-**If user approves** → proceed to Phase 5.
+**Step 3 — Self-review the written file:**
+
+1. **Placeholder scan:** Any vague evidence, incomplete fields, or "TBD"? Fix them.
+2. **Consistency:** Does the root cause match the evidence?
+3. **Ambiguity:** Could the root cause be interpreted two ways? Pick one and make it explicit.
+
+**Step 4 — User review gate:**
+
+> "Bug report written to `<path>`. Please review it and let me know if you want any changes before we move to fix planning."
+
+Wait for user response. If changes requested → update file and re-run self-review. Only proceed once the user approves.
+
+**If user rejects root cause** → return to Phase 1 with new information.
 
 **This stop is not optional:**
 
-- Root cause is obvious to you → still report and wait
-- Bug is simple → still report and wait
-- You're under time pressure → ESPECIALLY report and wait
+- Root cause is obvious to you → still write the file and wait
+- Bug is simple → still write the file and wait
+- You're under time pressure → ESPECIALLY write the file and wait
 
 ### Phase 5: Fix Plan
 
