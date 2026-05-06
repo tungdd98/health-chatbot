@@ -60,7 +60,7 @@ flowchart TD
         qualReview["Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)"]
         qualApprove{"Code quality reviewer subagent approves?"}
         fixQuality["Implementer subagent fixes quality issues"]
-        markDone["Mark task complete in TodoWrite"]
+        markDone["Mark task complete in TodoWrite + update checkbox in plan file (no commit)"]
     end
 
     isolate --> read
@@ -247,6 +247,7 @@ Done!
 **Never:**
 
 - Start implementation on main/master branch without explicit user consent
+- Commit the plan file (`docs/plans/`) — update checkboxes in place only, plan files are not part of the deliverable
 - Skip reviews (spec compliance OR code quality)
 - Proceed with unfixed issues
 - Dispatch multiple implementation subagents in parallel (conflicts)

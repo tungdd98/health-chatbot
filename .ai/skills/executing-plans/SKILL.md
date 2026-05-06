@@ -30,6 +30,7 @@ For each task:
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
 4. Mark as completed
+5. Update checkboxes in the plan file (`- [ ]` → `- [x]`) — **do NOT commit the plan file**
 
 ### Step 3: Complete Development
 
@@ -67,6 +68,7 @@ After all tasks complete and verified:
 - Reference skills when plan says to
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
+- **Never commit the plan file** — update checkboxes in place only, plan files are not part of the deliverable
 
 ## Integration
 
