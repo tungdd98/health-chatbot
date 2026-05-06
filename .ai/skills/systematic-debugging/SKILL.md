@@ -250,48 +250,36 @@ After the user approves the bug report, invoke the `writing-plans` skill.
 
 ### Phase 6: Implementation
 
-**Fix the root cause, not the symptom. Only start after Phase 5 is approved.**
+**Only start after Phase 5 is approved.**
 
-1. **Create Failing Test Case**
-   - Simplest possible reproduction
-   - Automated test if possible
-   - One-off test script if no framework
-   - MUST have before fixing
-   - Use the `test-driven-development` skill for writing proper failing tests
+1. **Invoke `isolating-feature-work`** — REQUIRED first step, no exceptions
+2. **Execute via user-selected skill:**
+   - `subagent-driven-development` (recommended)
+   - `executing-plans`
 
-2. **Implement Single Fix**
-   - Address the root cause identified
-   - ONE change at a time
-   - No "while I'm here" improvements
-   - No bundled refactoring
+**If fix doesn't work** (subagent reports BLOCKED or fix fails after merge):
 
-3. **Verify Fix**
-   - Test passes now?
-   - No other tests broken?
-   - Issue actually resolved?
+- STOP
+- Count: How many approaches have been tried?
+- If < 3: Return to Phase 1, re-analyze with new information
+- **If ≥ 3: STOP and question the architecture (step below)**
+- DON'T attempt another fix without discussing with user
 
-4. **If Fix Doesn't Work**
-   - STOP
-   - Count: How many fixes have you tried?
-   - If < 3: Return to Phase 1, re-analyze with new information
-   - **If ≥ 3: STOP and question the architecture (step 5 below)**
-   - DON'T attempt Fix #4 without architectural discussion
+**If 3+ approaches failed: Question Architecture**
 
-5. **If 3+ Fixes Failed: Question Architecture**
+Pattern indicating architectural problem:
 
-   **Pattern indicating architectural problem:**
-   - Each fix reveals new shared state/coupling/problem in different place
-   - Fixes require "massive refactoring" to implement
-   - Each fix creates new symptoms elsewhere
+- Each fix reveals new shared state/coupling/problem in a different place
+- Fixes require massive refactoring to implement
+- Each fix creates new symptoms elsewhere
 
-   **STOP and question fundamentals:**
-   - Is this pattern fundamentally sound?
-   - Are we "sticking with it through sheer inertia"?
-   - Should we refactor architecture vs. continue fixing symptoms?
+STOP and question fundamentals:
 
-   **Discuss with your human partner before attempting more fixes**
+- Is this pattern fundamentally sound?
+- Are we sticking with it through sheer inertia?
+- Should we refactor the architecture vs. continue fixing symptoms?
 
-   This is NOT a failed hypothesis - this is a wrong architecture.
+Discuss with your human partner before attempting more fixes. This is NOT a failed hypothesis — this is a wrong architecture.
 
 ## Red Flags - STOP and Follow Process
 
